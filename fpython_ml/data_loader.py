@@ -61,8 +61,8 @@ class PDFHandler(FileHandler):
 class DataLoader:
     def __init__(self):
         self._handlers = {
-            '.pdf': PDFHandler,
-            '.txt': TxtHandler
+            '.pdf': PDFHandler(),
+            '.txt': TxtHandler()
         }
     def load_file(self, file_path: Union[str, Path]) -> Optional[str]:
         path = Path(file_path)
