@@ -53,8 +53,27 @@ class PDFHandler(FileHandler):
             logger.error(f"Ошибка чтения PDF {path.name}: {e}")
             return None
 
-    @abstractmethod
+    @classmethod
     def can_handle(cls, extension: str) -> bool:
         return extension.lower() == '.pdf'
+
+
+class DataLoader:
+    def __init__(self):
+        self._handlers = {
+            '.pdf': PDFHandler,
+            '.txt': TxtHandler
+        }
+    def load_file(self, file_path: Union[str, Path]) -> Optional[str]:
+        path = Path(file_path)
+        extension = path.suffix.lower()
+
+        handler = self._handlers.get(extension)
+
+        if not handler:
+            logger.warning(f"Неподдерживаемый формат: {extension}")
+            return None
+
+        return handler.read(path)
 
 
